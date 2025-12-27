@@ -1,0 +1,2 @@
+## Question
+Given a list of strings, each containing a request ID, IP address, and a timestamp with all 3 space separated, considering  a limit that no IP should be allowed more than once per second, filter out the excessive requests that are sent within 1 second.Give me examples of different types of input for such a interview leetcode question and ensure you include all 3 values for requestID, IP Address and Timestamp. Be clear and suggest what edge cases there can be
