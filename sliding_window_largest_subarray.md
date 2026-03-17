@@ -17,7 +17,7 @@ You are given an integer array nums consisting of n elements, and an integer k.
 
 Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value. Any answer with a calculation error less than 10-5 will be accepted.
 
- 
+
 
 Example 1:
 
@@ -28,7 +28,7 @@ Example 2:
 
 Input: nums = [5], k = 1
 Output: 5.00000
- 
+
 
 Constraints:
 
@@ -75,10 +75,10 @@ Though the interesting question comes, do we allow multiple sub arrays where we 
 
 Great thinking! You’re exploring the right optimization directions. Let’s break down your ideas and clarify a key point in the problem:
 
-You asked:  
+You asked:
 > Though the interesting question comes, do we allow multiple sub arrays where we consider indexes that is previously processed by moving the slice by 1 and not k
 
-**Yes!**  
+**Yes!**
 The problem is asking for _every contiguous subarray_ of length `k`, meaning we should look at every possible sequence of `k` elements in `nums`, moving the window **one step at a time**. So, example: for `nums = [1, 2, 3, 4]` and `k = 2`, the subarrays are `[1,2]`, `[2,3]`, `[3,4]`.
 
 ---
@@ -91,8 +91,8 @@ Let’s reflect on your approach (summarized):
 You also mentioned:
 - Instead of storing all sums/averages, simply update the max as you go—which is great for reducing memory usage.
 
-Let me ask:  
-If we want to efficiently calculate the sum of each window of length `k` as we slide it by 1, how could we update the sum in constant time, rather than recalculating the sum from scratch each time?  
+Let me ask:
+If we want to efficiently calculate the sum of each window of length `k` as we slide it by 1, how could we update the sum in constant time, rather than recalculating the sum from scratch each time?
 
 What’s your insight on that?
 
@@ -117,14 +117,14 @@ By:
 1. Subtracting the element that's leaving the window,
 2. Adding the element that's entering the window,
 
-…you keep the running window sum updated in O(1) time per step, so you only do O(n) total work—**very efficient**.  
+…you keep the running window sum updated in O(1) time per step, so you only do O(n) total work—**very efficient**.
 And since you only track the sum and max-average, your space complexity is O(1).
 
 ---
 
 Let’s take your thought process a step further with a Socratic question:
 
-If you were to code this up,  
+If you were to code this up,
 - What would your initialization steps look like (especially for the very first window)?
 - And how would you handle scenarios where the array can contain negative numbers (as given in the constraints)?
 
@@ -207,17 +207,17 @@ Let’s walk through where you can simplify:
 
 ### Core Idea for Clean, Optimal Solution
 
-1. **First Window:**  
+1. **First Window:**
    - Compute `window_sum = sum(nums[:k])`
    - Set `max_sum = window_sum`
 
-2. **Slide the Window:**  
+2. **Slide the Window:**
    - For each index `i` from `k` to `len(nums)-1`:
      - Subtract `nums[i-k]` (the element leaving the window)
      - Add `nums[i]` (the element entering the window)
      - Track `max_sum` if `window_sum` exceeds the current
 
-3. **Result:**  
+3. **Result:**
    - Divide `max_sum` by `k` for the answer
 
 No need for negative number corrections or complex index juggling; just cleanly adjust the window by 1 each time.
@@ -249,15 +249,15 @@ assert abs(solution.findMaxAverage([1, 12, 5, 6, 3, 50], 4) - 16) < 1e-5
 ```
 
 ### Why is this code **O(n)** time and **O(1)** space?
-- **Time:**  
+- **Time:**
   - The first sum is O(k), the rest of the loop is O(n - k), for **O(n)** overall
-- **Space:**  
+- **Space:**
   - No extra arrays! Just a couple of integer variables
 
 ---
 
 #### Final Thought:
-What benefits do you notice from this more direct sliding window (over more complex approaches or storing all window sums)?  
+What benefits do you notice from this more direct sliding window (over more complex approaches or storing all window sums)?
 And what edge cases does this naturally handle well?
 
 ## @influx6
@@ -284,30 +284,30 @@ Think of what a "window" is:
     - **Add** the next number at position `i` (the right-side boundary of your new window)
     - **Remove** the number `k` steps behind (`i - k`), which is the left-side boundary of the old window (now sliding out).
 
-**Why?**  
-At each iteration at `i` (with `i >= k`),  
+**Why?**
+At each iteration at `i` (with `i >= k`),
 your window contains indices `[i - k + 1, i]`
 
 - The element at `i` is being included
 - The element at `i - k` is the one that just left the window (because your window previously started at `i - k` and now starts at `i - k + 1`)
 
-So,  
-`window_sum = window_sum + nums[i] - nums[i - k]`  
+So,
+`window_sum = window_sum + nums[i] - nums[i - k]`
 perfectly reflects this window-slide logic.
 
 ### Visual Example
 Suppose:
 - nums: [10, 20, 30, 40, 50], k = 3
 
-**First window:**  
+**First window:**
 [10, 20, 30] ⇒ sum = 60
 
-**Next window (slide right):**  
-remove 10, add 40 → `[20, 30, 40]`  
+**Next window (slide right):**
+remove 10, add 40 → `[20, 30, 40]`
 New sum = (previous sum) + 40 - 10 = 60 + 40 - 10 = 90
 
-then  
-remove 20, add 50 → `[30, 40, 50]`  
+then
+remove 20, add 50 → `[30, 40, 50]`
 New sum = 90 + 50 - 20 = 120
 
 See how subtracting `nums[i - k]` lets you cleanly "move the window"?
@@ -315,7 +315,7 @@ See how subtracting `nums[i - k]` lets you cleanly "move the window"?
 ---
 
 #### Socratic follow-up:
-What do you think would happen if we forgot to subtract `nums[i - k]` on each window move, or if we used the wrong index?  
+What do you think would happen if we forgot to subtract `nums[i - k]` on each window move, or if we used the wrong index?
 How would that affect the running sum?
 
 ## @influx6
@@ -336,7 +336,7 @@ Great! You’ve deeply understood:
 - Why sliding window works so efficiently
 - How precise indexing is crucial to maintain the correct window sum
 
-**Next challenge:**  
+**Next challenge:**
 If you want, I can help you apply sliding window ideas to other variations, like “find longest subarray with average at least X”, or other problems—just let me know!
 
 ## @influx6
@@ -377,17 +377,17 @@ When using a sliding window, your loop variable (`i`) is usually pointing to the
 
 ### 4. **Nonzero-based Indexing Trips Us Up**
 
-When you’re working with zero-based indexing (Python), sometimes folks mentally translate “the window of length k” incorrectly when mapping to real indices.  
+When you’re working with zero-based indexing (Python), sometimes folks mentally translate “the window of length k” incorrectly when mapping to real indices.
 But with practice, you start to “see”:
 
 - The new element in: `i`
-- The element to remove: `i - k`  
+- The element to remove: `i - k`
 
 ---
 
 ### **TL;DR (and an Expert’s Secret)**
 
-Even experienced engineers sometimes miss this abstraction when first solving a problem!  
+Even experienced engineers sometimes miss this abstraction when first solving a problem!
 It takes:
 - Experience with sliding window patterns,
 - Stepping through examples,
@@ -397,7 +397,7 @@ It takes:
 
 ---
 
-#### Would you like to walk through a more complex sliding window problem to deepen your intuition?  
+#### Would you like to walk through a more complex sliding window problem to deepen your intuition?
 Or do you have another topic or pattern you'd like to explore?
 
 ## @influx6
@@ -412,28 +412,28 @@ Great! Let’s look at several classic and interesting sliding window applicatio
 
 ### 1. **Find longest subarray with average at least X**
 
-**Problem statement**:  
+**Problem statement**:
 Given an array of integers `nums` and a value `X`, find the length of the *longest contiguous subarray* whose average is **at least** `X`.
 
 ---
 
-**Let’s start with a question:**  
+**Let’s start with a question:**
 How would you *reformulate* the problem so that sliding window can help us efficiently find such a subarray?
 
-Think, for example:  
+Think, for example:
 - If we want the average of a subarray `[i:j]` to be at least X, what mathematical relationship does that impose on the sum of that subarray?
 
 ----
 
-#### Hint  
-If the subarray from index i to j (inclusive of i, exclusive of j+1) has length L, its sum S, and average S/L ≥ X,  
+#### Hint
+If the subarray from index i to j (inclusive of i, exclusive of j+1) has length L, its sum S, and average S/L ≥ X,
 then S ≥ X * L.
 
 So, for any window, if its sum minus X times its length is ≥ 0, then its average ≥ X.
 
 ---
 
-**How might you use this fact to design an efficient method with sliding window?**  
+**How might you use this fact to design an efficient method with sliding window?**
 You could try all possible window lengths, or try a smarter approach. What are your thoughts? Try sketching your approach—describe your idea either as an algorithm or high-level steps.
 
 ## @influx6
@@ -444,9 +444,9 @@ I think this then requires that X = sum(array[i:j]) / len(array[i:j])
 
 ## Copilot
 
-Exactly!  
-And if we solve for the sum, it gives us:  
- sum(array[i:j]) / len(array[i:j]) ≥ X  
+Exactly!
+And if we solve for the sum, it gives us:
+ sum(array[i:j]) / len(array[i:j]) ≥ X
 ⇒ sum(array[i:j]) ≥ X × len(array[i:j])
 
 ---
@@ -483,17 +483,17 @@ Great question—let’s make this super clear!
 
 Let’s restate the math from first principles:
 
-You want  
+You want
  **sum_window / window_length ≥ X**
 
-Multiply both sides by `window_length` (which is always > 0):  
+Multiply both sides by `window_length` (which is always > 0):
  **sum_window ≥ X × window_length**
 
-Now, subtract `X × window_length` from both sides:  
+Now, subtract `X × window_length` from both sides:
  **sum_window - (X × window_length) ≥ 0**
 
-So, for any window,  
-- If **sum_window - X × window_length ≥ 0**,  
+So, for any window,
+- If **sum_window - X × window_length ≥ 0**,
 - then **the window’s average is at least X**.
 
 ---
@@ -506,18 +506,18 @@ So, for any window,
 
 **Example:**
 
-Suppose window is [a, b, c], k = 3, X = 4  
-sum_window = a + b + c  
-Average ≥ X means:  
-(a + b + c)/3 ≥ 4 → a + b + c ≥ 12  
+Suppose window is [a, b, c], k = 3, X = 4
+sum_window = a + b + c
+Average ≥ X means:
+(a + b + c)/3 ≥ 4 → a + b + c ≥ 12
 So, a + b + c - 12 ≥ 0
 
 ---
 
-**Summary:**  
+**Summary:**
 - We start with S / L ≥ X
 - Multiply both sides by L to get S ≥ X × L
-- Subtract X × L → S - X × L ≥ 0  
+- Subtract X × L → S - X × L ≥ 0
  (which is sometimes computationally more convenient)
 
 ---
@@ -530,7 +530,7 @@ Yes show me a coded visualization
 
 ## Copilot
 
-Absolutely! Let’s visualize the transformation step-by-step in code, with comments showing each phase.  
+Absolutely! Let’s visualize the transformation step-by-step in code, with comments showing each phase.
 We’ll use a small example array, try different window lengths, and see how both the average and the transformed condition `sum_window - X * window_length` behave.
 
 ---
@@ -588,8 +588,8 @@ Notice:
 
 ---
 
-**Takeaway:**  
-This transformation makes it easy to check—regardless of window size—whether a window’s average meets your threshold, using only sums and lengths!  
+**Takeaway:**
+This transformation makes it easy to check—regardless of window size—whether a window’s average meets your threshold, using only sums and lengths!
 And, it’s a useful building block for further optimizations (e.g., prefix sums, binary search on window sizes).
 
 **Let me know if you want to explore using this in an efficient algorithm, or if you’d like to visualize other variations!**
@@ -621,12 +621,12 @@ You could try every possible window and track the longest that meets the conditi
 
 How could you improve this?
 - Do you think you can use a sliding window (expanding and shrinking the window as needed) to keep only those windows for which the excess (S - X * L) stays above zero?
-- What’s the challenge if array elements can be negative?  
+- What’s the challenge if array elements can be negative?
 
-Or:  
+Or:
 If you fix the window size and want to know if **any** window of that size has average ≥ X, could you use the sliding window technique?
 
-What might the high-level approach be if you want the **longest** window?  
+What might the high-level approach be if you want the **longest** window?
 (There’s a “classic” optimal way involving binary search + sliding window.)
 
 Try to reason out which order you’d structure your solution and what you’d keep track of during the process!
@@ -643,14 +643,14 @@ Say we hit a index from the new window that now makes us < 0, but if the length 
 
 ## Copilot
 
-You’re thinking creatively and you’re catching onto some **core difficulties** in this type of problem! 👍  
+You’re thinking creatively and you’re catching onto some **core difficulties** in this type of problem! 👍
 Let’s unpack both your lines of thought.
 
 ---
 
 ### 1. **Expanding Until Failure, Storing Start/End/Length**
 
-This is a natural greedy instinct:  
+This is a natural greedy instinct:
 - Expand the window while your sum-minus-threshold is ≥ 0.
 - When it drops below, remember where, then try starting a new window after the bad element.
 
@@ -664,20 +664,20 @@ For example, `[2, 2, 100, 2, 2]` with X=10—it’s possible a long valid window
 
 ### 2. **Role of Large Values / "Peakiness"**
 
-Great observation!  
+Great observation!
 - A big value can **pull up** the average, making even a long window valid (especially if other values are not too negative).
 - But, you can’t always just “jump” to the big value and expect optimality, because the longest valid window might start well before or after.
 
-**Key trick in optimal approaches:**  
+**Key trick in optimal approaches:**
 Sometimes large values can anchor long valid windows, but you have to systematically search for the longest possible one, not just "greedily" chase high values.
 
 ---
 
 ### 3. **Classic Optimal Algorithm: Binary Search + Sliding Window**
 
-This is where it gets interesting:  
+This is where it gets interesting:
 
-- Suppose you could **fix** a window size `L`, and check:  
+- Suppose you could **fix** a window size `L`, and check:
   "Does there exist any subarray of length L with average ≥ X?"
 
 - You can answer this efficiently via sliding window (O(n)), as you've seen.
@@ -695,15 +695,15 @@ This is where it gets interesting:
 You observed:
 > Sometimes smaller windows can have large averages due to big numbers, but might not be the *longest*.
 
-**That’s right!** Highest average and longest valid window are different goals.  
+**That’s right!** Highest average and longest valid window are different goals.
 Here, we want the **longest sequence with average at least X**, even if shorter windows have higher averages.
 
 ---
 
 ## Socratic followup:
 
-Suppose I asked:  
-How would you code the check: “Is there any subarray of length L with average at least X?”  
+Suppose I asked:
+How would you code the check: “Is there any subarray of length L with average at least X?”
   - What would your pseudocode (step-by-step, or with variables) be?
   - What would you keep track of as you slide your window?
 
@@ -714,7 +714,7 @@ Write that out in words or high-level code, and we’ll review—then we can ske
 Before we move to that cause I am still unclear, what we've said is we could:
 
 1. Try a random length L  to see if we can find a subarray opf length L with avg >= X
-2. use this to decide if we should increment L to see the next length or reduce L 
+2. use this to decide if we should increment L to see the next length or reduce L
 
 i guess this helps us accurately find the optimal L that gives us the longest sequence, once we get to L + 1 and it gives us avg < 0, then we know we have the longest L.
 
@@ -745,9 +745,9 @@ You're trying to find the **maximum L** such that `check(L)` is true.
 If for a certain L, `check(L)` is true, then all lengths **shorter than L** will also have possible valid subarrays (it’s easier to get a higher avg in a small window).
 
 That’s a classic scenario for **binary search**:
-- There’s a “YES/NO” transition point:  
-   For small L: check(L) is true  
-   For large L: check(L) is false  
+- There’s a “YES/NO” transition point:
+   For small L: check(L) is true
+   For large L: check(L) is false
    So we can perform binary search for the largest L that is still true.
 
 ---
@@ -757,9 +757,9 @@ That’s a classic scenario for **binary search**:
 - **Set low = 1, high = n** (where n is the array length)
 - While low < high:
   - Set mid = (low + high + 1) // 2  (+1 for upper mid, so that low moves up)
-  - If `check(mid)` is true:  
+  - If `check(mid)` is true:
     - It means length `mid` is possible, so try longer: **low = mid**
-  - If `check(mid)` is false:  
+  - If `check(mid)` is false:
     - Not possible, so shorten: **high = mid - 1**
 - When loop finishes, `low` is the largest L for which `check(L)` is true.
 
@@ -790,19 +790,19 @@ Binary search is the tool that lets you find the biggest L quickly, instead of s
 
 ---
 
-**Does this binary search process make sense now?**  
-Or would you like to see a little snippet of how the binary search part would be written in code?  
+**Does this binary search process make sense now?**
+Or would you like to see a little snippet of how the binary search part would be written in code?
 Let me know how you’re feeling!
 
 ## @influx6
 
-Infact, how do we implement binary search without doing a binary tree? 
+Infact, how do we implement binary search without doing a binary tree?
 
 Thinking of it, it means we split the array into 2 and search both sides? Do we search both sides for the current L?
 
 ## Copilot
 
-This is an **excellent** point to clarify!  
+This is an **excellent** point to clarify!
 **Binary search** can seem unintuitive if you've only seen it on sorted arrays. But here, it’s not about trees or splitting arrays, but about efficiently searching a **range of possible values (window lengths)**.
 
 Let’s break it down step by step, using *no trees*, just plain numbers:
@@ -826,14 +826,14 @@ So, "binary search" here is used to search all possible values of **L**.
 
 Let’s say n = 10. You’re searching values of L between 1 and 10:
 
-1. Start with `low = 1`, `high = 10`  
+1. Start with `low = 1`, `high = 10`
 2. Compute `mid = (low + high + 1) // 2` (this is the candidate L to try)
 3. Ask: “Can I find a valid window of length L = mid?”
     - If **YES** (possible): then all shorter L are also possible, but we want the biggest, so try longer — set `low = mid`
     - If **NO** (not possible): then all longer L are also impossible, so try shorter — set `high = mid - 1`
 4. Repeat until `low == high`, then `low` is your answer.
 
-You never split the array itself, or search two sides at once.  
+You never split the array itself, or search two sides at once.
 **At each step, you pick one L to check, and based on the answer, you "discard" either all higher or all lower values.**
 
 ---
@@ -865,7 +865,7 @@ The while loop will keep shrinking the range between `low` and `high`.
 
 ---
 
-**Does that clarify how to apply binary search in this scenario?**  
+**Does that clarify how to apply binary search in this scenario?**
 Would you like to see a simple sample code showing this loop (without a tree or recursion)?
 
 ## @influx6
@@ -986,7 +986,7 @@ So:
 
 ### Practical Use
 
-Now, our problem becomes:  
+Now, our problem becomes:
 > “Is there any window of size L in the transformed array whose sum is at least 0?”
 
 This is easier to code:
@@ -1003,7 +1003,7 @@ This is easier to code:
 
 ---
 
-**TL;DR:**  
+**TL;DR:**
 Subtracting X from each element “bakes in” the minimum average requirement, converting an average (division) check into a simple sum (subtraction) check.
 
 If you want, we can show a small concrete example to visualize this transformation step-by-step!
@@ -1043,7 +1043,7 @@ sum(window) - X * L >= 0
 
 That means: If the sum of this window is at least **X * L**, the average is at least X.
 
-Now, look at this sum for a specific window:  
+Now, look at this sum for a specific window:
 Suppose the window is nums[i], nums[i+1], ..., nums[i+L-1]
 
 ```
@@ -1055,7 +1055,7 @@ This is the same as:
 = sum((nums[j] - X) for j from i to i+L-1)
 ```
 
-**In other words:**  
+**In other words:**
 Subtracting X from every array element turns the problem of
 > “Find a window of length L with average at least X”
 into
@@ -1067,19 +1067,19 @@ into
 
 Let’s use nums = [5, 1, 7], X = 4, L = 2
 
-**Original:**  
-Look for a window of length 2 where average ≥ 4  
+**Original:**
+Look for a window of length 2 where average ≥ 4
 
 - [5,1]: sum = 6, avg = 3
 - [1,7]: sum = 8, avg = 4
 - [5,7]: not a valid window (since they are not contiguous)
 
-**Threshold:**  
+**Threshold:**
 sum ≥ X * 2 = 8
 
 Only [1,7] meets this (sum = 8).
 
-**Now "subtract X" transformation:**  
+**Now "subtract X" transformation:**
 transformed = [5-4, 1-4, 7-4] = [1, -3, 3]
 
 Now, look for a window of length 2 where sum ≥ 0:
@@ -1135,14 +1135,14 @@ If you had to check the sum of every window of length L _without_ prefix sums, y
 ### **How Prefix Sums Work for Windows**
 
 - `prefix[i]` stores the sum of the first i elements of your (possibly transformed) array.
-- For any window from index `start` to `end` (with length L = end - start):  
+- For any window from index `start` to `end` (with length L = end - start):
   The sum of elements in that window is:
 
     ```
     prefix[end] - prefix[start]
     ```
 
-For a window starting at index `i` and length `L`,  
+For a window starting at index `i` and length `L`,
 the sum is `prefix[i+L] - prefix[i]`.
 
 ---
@@ -1179,7 +1179,7 @@ This is **efficient**, O(n) for all windows of a given L!
 
 ---
 
-**Want to see a walk-through on a small concrete array so you can "see" those sums in action?**  
+**Want to see a walk-through on a small concrete array so you can "see" those sums in action?**
 Or do you want to keep moving on higher-level ideas?
 
 ## @influx6
@@ -1204,8 +1204,8 @@ To:
 
 ## Copilot
 
-This is a **very insightful realization**!  
-What you’re observing is the **art of reducing complex conditions into a form that fits efficient, well-known algorithms**.  
+This is a **very insightful realization**!
+What you’re observing is the **art of reducing complex conditions into a form that fits efficient, well-known algorithms**.
 That’s one of the biggest leaps from “competent programmer” to “strong algorithmic problem solver”—and you’ve articulated it well.
 
 Let’s walk through how to **embed this mindset as a daily pattern**:
@@ -1214,7 +1214,7 @@ Let’s walk through how to **embed this mindset as a daily pattern**:
 
 ## 1. **Express the Problem as an Equation**
 
-Whenever a problem asks for *averages*, *ratios*, or conditions involving division/multiplication, try restating it as an algebraic inequality with all terms on one side.  
+Whenever a problem asks for *averages*, *ratios*, or conditions involving division/multiplication, try restating it as an algebraic inequality with all terms on one side.
 For example:
 - Starting from: `sum(window) / L >= X`
 - Multiply both sides by L: `sum(window) >= X * L`
@@ -1226,7 +1226,7 @@ For example:
 
 Once you have this, ask: *Can this be written as a sum over transformed elements?*
 - Here, `sum(nums[i]...nums[i+L-1]) - X*L`
-- Realize: `sum(nums[j] - X for j in window)`  
+- Realize: `sum(nums[j] - X for j in window)`
   (because `sum(nums[j]) - sum(X for each j) = sum(nums[j]) - X*L`)
 
 ---
@@ -1335,7 +1335,7 @@ That is, **distributivity** of subtraction over addition:
 ```
 (a - X) + (b - X) + (c - X) = (a + b + c) - 3X
 ```
-So for a window of L elements,  
+So for a window of L elements,
 `sum(window) - X * L = sum(each element minus X)`
 
 ---
@@ -1344,7 +1344,7 @@ So for a window of L elements,
 
 - **Addition and subtraction are associative and commutative.**
 - Subtracting X from the *total sum* of L numbers is the same as subtracting X from *each* and then summing.
-- The distributive law for "+" and "-":  
+- The distributive law for "+" and "-":
   `sum(a_j - X, for j=1..L) = sum(a_j, for j=1..L) - X*L`
 
 **This only holds for linear operations (sum, subtract, add).**
@@ -1354,9 +1354,9 @@ It would NOT hold the same way for products or non-linear operations!
 
 ## 3. **When Does This **Not** Apply?**
 
-- Multiplication inside vs. outside sum:  
+- Multiplication inside vs. outside sum:
   `sum(a_j * X, for j=1..L) = X * sum(a_j, for j=1..L)` (works, distributivity)
-- For division:  
+- For division:
   `sum(a_j / X, for j) ≠ sum(a_j) / X` (unless X is constant and no zero-divs)
 
 But for exponentiation, or taking logs or non-linear stuff, the distributive move might not work! Always check the algebra.
@@ -1377,7 +1377,7 @@ But for exponentiation, or taking logs or non-linear stuff, the distributive mov
 
 ## **TL;DR**
 
-> **Subtraction or addition of a constant out of the sum can always be distributed to the individual terms inside the sum.**  
+> **Subtraction or addition of a constant out of the sum can always be distributed to the individual terms inside the sum.**
 > (e.g., \( \sum_j (a_j - X) = \sum_j a_j - X \cdot L \))
 
 That's why our average-to-sum transformation is mathematically sound here!
@@ -1388,7 +1388,7 @@ Would you like to try to rewrite a condition into a distributive form yourself a
 
 ## @influx6
 
-Further explain this realization: 
+Further explain this realization:
 
 sum(nums[i]...nums[i+L-1]) - X*L
 Realize: sum(nums[j] - X for j in window)
@@ -1457,14 +1457,14 @@ which is exactly your original expression!
   - Add them all up
   - The sum of L elements, each with X subtracted
 
-So, for a window of length L,  
+So, for a window of length L,
 **sum(nums[j] - X for j in window) = sum(window) - X * L**
 
 ---
 
 ### Why is this Useful?
 
-Because it means that **subtracting X from every window element and summing is the same as summing the original window and subtracting X * window size**.  
+Because it means that **subtracting X from every window element and summing is the same as summing the original window and subtracting X * window size**.
 That gives us a nice way to “move” the threshold into the values, and makes code simpler and efficient.
 
 ---
@@ -1485,7 +1485,7 @@ They are the **same**!
 ---
 
 ### **Socratic summary**
-- For every j in your window, subtract X before summing, or sum them then subtract X * L — it’s the **same value** by the distributive property.  
+- For every j in your window, subtract X before summing, or sum them then subtract X * L — it’s the **same value** by the distributive property.
 
 **Does this make it clear how the L and j relate, and why the transformation works?**
 
