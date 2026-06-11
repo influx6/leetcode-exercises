@@ -36,7 +36,10 @@ function gcdOfStrings(str1: string, str2: string): string {
 
   const sub_string = str1.substring(0, larger_length);
 
-  if (sub_string.repeat(str1_repeatable) == str1 && sub_string.repeat(str2_repeatable) == str2) {
+  if (
+    sub_string.repeat(str1_repeatable) == str1 &&
+    sub_string.repeat(str2_repeatable) == str2
+  ) {
     return sub_string;
   }
 
@@ -53,11 +56,17 @@ console.log("GreatestDividingString: value=", gcdOfStrings("AAAAAB", "AAA"));
 console.log("GreatestDividingString: value=", gcdOfStrings("XYZXYZ", "XYZ"));
 console.log("GreatestDividingString: value=", gcdOfStrings("ABCABCA", "ABC"));
 console.log("GreatestDividingString: value=", gcdOfStrings("AAAAAA", "AA"));
-console.log("GreatestDividingString: value=", gcdOfStrings("ABCDEFABCDEF", "ABCXYZ"));
+console.log(
+  "GreatestDividingString: value=",
+  gcdOfStrings("ABCDEFABCDEF", "ABCXYZ"),
+);
 console.log("GreatestDividingString: value=", gcdOfStrings("ABBAABBA", "ABBA"));
 console.log("GreatestDividingString: value=", gcdOfStrings("ABAB", "ABAC"));
 
 console.log(
   "GreatestDividingString: value=",
-  gcdOfStrings("TAUXXTAUXXTAUXXTAUXXTAUXX", "TAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXX"),
+  gcdOfStrings(
+    "TAUXXTAUXXTAUXXTAUXXTAUXX",
+    "TAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXX",
+  ),
 );
