@@ -1,0 +1,176 @@
+Reap Interviews
+
+I applied online. The process took 3 days. I interviewed at REAP (Hong Kong) in Jun 2022
+3 rounds some normal interview questions e.g. why would you choose us, What do you know about us, Tell me about yourself , etc. and some coding tests which are quite easy, e.g. reverse an array
+
+May 14, 2026 (Engr Manager)
+- Sort string (permutations) - Fix Unit Tests (hidden trick — the test case was intentionally wrong) - Apply recursion to print permutations
+
+
+2 Oct 2015
+Diagramatical questions and theoretical experience on past companies.
+
+22 Sept 2025
+Implement webhook endpoints in Express js
+
+2 Sept 2025
+Longest consecutive sum in array
+
+Can you find a valid palindrome in a given string?
+
+To ace the technical interview at Reap, you should focus on core data structures, array manipulations, and string processing. Past candidate reports indicate that the problems generally range from LeetCode Easy to Medium, with a strong emphasis on clean code, edge-case handling, and optimal time complexity.
+Here are three distinct problem types you are highly likely to encounter, along with their solutions and analytical breakdowns.
+------------------------------
+## 1. Array Manipulation & Prefix Sums
+This problem directly tests your ability to track contiguous data efficiently, mirroring the "longest consecutive sum" style questions previously reported by candidates.
+## Problem Statement
+Given an array of integers nums and an integer target, find the maximum length of a contiguous subarray that sums to exactly target. If no such subarray exists, return $0$.
+## Code Implementation
+
+def max_sub_array_len(nums: list[int], target: int) -> int:
+    # Maps prefix_sum -> earliest index encountered
+    prefix_map = {0: -1}
+    current_sum = 0
+    max_length = 0
+
+    for i, num in enumerate(nums):
+        current_sum += num
+
+        # Check if a complement exists that yields the target sum
+        complement = current_sum - target
+        if complement in prefix_map:
+            max_length = max(max_length, i - prefix_map[complement])
+
+        # Only record the earliest index to maximize the subarray length
+        if current_sum not in prefix_map:
+            prefix_map[current_sum] = i
+
+    return max_length
+
+## Complexity Analysis
+
+* Time Complexity: $\mathcal{O}(N)$. We traverse the array exactly once, performing $\mathcal{O}(1)$ dictionary lookups at each step.
+* Space Complexity: $\mathcal{O}(N)$. In the worst-case scenario, every prefix sum is unique and stored in the hash map.
+
+------------------------------
+## 2. Two-Pointer Window Mechanics
+Fintech platforms handle transactional timelines and data streaming. Sliding window algorithms are critical for optimizing these operations.
+## Problem Statement
+Given an array of positive integers nums and a positive integer target, find the minimal length of a contiguous subarray for which the sum is greater than or equal to target. If there is no such subarray, return $0$ instead.
+## Code Implementation
+
+def min_sub_array_len(target: int, nums: list[int]) -> int:
+    left = 0
+    current_sum = 0
+    min_length = float('inf')
+
+    for right in range(len(nums)):
+        current_sum += nums[right]
+
+        # Shrink the window from the left as long as the condition is met
+        while current_sum >= target:
+            min_length = min(min_length, right - left + 1)
+            current_sum -= nums[left]
+            left += 1
+
+    return min_length if min_length != float('inf') else 0
+
+## Complexity Analysis
+
+* Time Complexity: $\mathcal{O}(N)$. Although there is a nested while loop, the left pointer moves at most $N$ times across the entire execution.
+* Space Complexity: $\mathcal{O}(1)$. The algorithm uses a fixed number of pointer variables regardless of input size.
+
+------------------------------
+## 3. Hash Map Frequency & Tracking
+This type of problem evaluates your ability to clean up tracking states and perform lookups rapidly, which is foundational for working with ledger or ledger-like data structures.
+## Problem Statement
+Given an integer array nums and an integer k, return True if there are two distinct indices i and j in the array such that nums[i] == nums[j] and the absolute difference between i and j is at most k.
+## Code Implementation
+
+def contains_nearby_duplicate(nums: list[int], k: int) -> bool:
+    # Tracks the most recent index seen for each number
+    seen_map = {}
+
+    for i, num in enumerate(nums):
+        if num in seen_map and i - seen_map[num] <= k:
+            return True
+        # Always update to the latest index to minimize future differences
+        seen_map[num] = i
+
+    return False
+
+## Complexity Analysis
+
+* Time Complexity: $\mathcal{O}(N)$. The array is iterated over a single time, completing constant time hash table evaluations.
+* Space Complexity: $\mathcal{O}(N)$. The hash map scales linearly with the number of unique elements encountered.
+
+1. Sort String / Apply Recursion to Print Permutations
+
+Interviewers often combine these two. They ask you to generate permutations, but require the output to be in lexicographical (alphabetical) order.📝
+
+The Question"Write a recursive function that takes a string of unique characters and prints all possible rearrangements (permutations) of the characters in strict alphabetical order."💡 The Expected Solution (TypeScript)To get them in alphabetical order easily, you sort the string first, then use recursive backtracking.typescriptfunction
+
+printPermutations(str: string): void {
+  // Step 1: Sort the string first to guarantee alphabetical order
+  const sortedChars = str.split('').sort();
+
+  function backtrack(current: string, remaining: string[]): void {
+    // Base case: no characters left, print the result
+    if (remaining.length === 0) {
+      console.log(current);
+      return;
+    }
+
+    for (let i = 0; i < remaining.length; i++) {
+      // Choose character i
+      const nextChar = remaining[i];
+      // Filter out the chosen character for the next recursive step
+      const nextRemaining = remaining.filter((_, idx) => idx !== i);
+
+      // Recurse
+      backtrack(current + nextChar, nextRemaining);
+    }
+  }
+
+  backtrack("", sortedChars);
+}
+
+printPermutations("cba");
+// Output will perfectly sort to: "abc", "acb", "bac", "bca", "cab", "cba"
+Use code with caution.2. Fix Unit Tests (With a Hidden Trick)In this scenario, you are handed a codebase with a failing test. The interviewer implies your job is to fix the source code, but the actual bug is an illogical or mathematically impossible test case.📝 The Question"We have a function that calculates the Greatest Common Divisor (GCD) of two numbers. The code passes 4 out of 5 tests, but fails on the last one. Fix the bug so all tests pass."🛠️ The Provided Code & Teststypescript// THE SOURCE CODE (Mathematically Perfect)
+function getGCD(a: number, b: number): number {
+  while (b !== 0) {
+    let temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
+}
+
+// THE UNIT TESTS
+describe("getGCD Tests", () => {
+  test("GCD of 12 and 8 should be 4", () => {
+    expect(getGCD(12, 8)).toBe(4); // Passes
+  });
+
+  test("GCD of 20 and 15 should be 5", () => {
+    expect(getGCD(20, 15)).toBe(5); // Passes
+  });
+
+  // ⚠️ THE HIDDEN TRICK TEST CASE
+  test("GCD of 35 and 14 should be 14", () => {
+    expect(getGCD(35, 14)).toBe(14); // FAILS! Returns 7.
+  });
+});
+
+------------------------------
+## ✅ Interview Strategy Summary
+To succeed in a Reap technical interview, focus on writing working code quickly rather than over-engineering. Because their timeline can move fast, clearly vocalise your edge-case validation (such as handling empty arrays, negative numbers, or null inputs) before writing your first line of code.
+To continue preparing, let me know:
+
+* Which of these three patterns feels the most challenging to you?
+* Would you prefer to simulate a live mock coding session for one of them?
+* Do you want to review system design principles relevant to fintech (e.g., handling double-entry ledgers)?
+
+
+--------

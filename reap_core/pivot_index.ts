@@ -21,7 +21,6 @@
 // }
 
 // console.log(pivot_index([1, 7, 3, 6, 5, 6]));
-
 function pivotIndex(nums: Array<number>): number {
   // always provide an initial value else a crash will occur for empty []
   const sum = nums.reduce((current, last) => current + last, 0);
@@ -35,6 +34,5 @@ function pivotIndex(nums: Array<number>): number {
 
     left_sum += nums[index];
   }
-
   return -1;
 }
